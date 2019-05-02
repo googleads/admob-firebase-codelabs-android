@@ -1,0 +1,64 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "eef547087fda7ac5585022482fd773fc",
+    "entities": [
+      {
+        "tableName": "drawings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key_id` TEXT NOT NULL, `word` TEXT NOT NULL, `countrycode` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `isRecognized` INTEGER NOT NULL, `drawing` TEXT NOT NULL, PRIMARY KEY(`key_id`))",
+        "fields": [
+          {
+            "fieldPath": "keyId",
+            "columnName": "key_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "word",
+            "columnName": "word",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countryCode",
+            "columnName": "countrycode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isRecognized",
+            "columnName": "isRecognized",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "drawing",
+            "columnName": "drawing",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "key_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"eef547087fda7ac5585022482fd773fc\")"
+    ]
+  }
+}

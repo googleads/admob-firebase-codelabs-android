@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <!-- TODO: Set a default value for 'difficulty' Remote Config parameter (103) -->
+
+    <entry>
+        <key>reward_amount</key>
+        <value>1</value>
+    </entry>
+</defaultsMap>
