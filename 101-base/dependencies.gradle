@@ -5,7 +5,7 @@ ext {
     targetSdkVersion = 28
 
     // Plugins
-    androidPluginVersion = '3.4.0'
+    androidPluginVersion = '3.4.1'
     // TODO: Declare google-services plugin version (101)
 
 

@@ -5,7 +5,7 @@ ext {
     targetSdkVersion = 28
 
     // Plugins
-    androidPluginVersion = '3.4.0'
+    androidPluginVersion = '3.4.1'
     googleServicesPluginVersion = '4.2.0'
 
     // Library
