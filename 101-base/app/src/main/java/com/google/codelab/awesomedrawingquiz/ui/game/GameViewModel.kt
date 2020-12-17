@@ -28,9 +28,10 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
+// COMPLETE: Accept FirebaseAnalytics instance as a parameter (101)
 class GameViewModel(
     private val drawingDao: DrawingDao,
-    private val settings: GameSettings
+    private val settings: GameSettings,
 ) : ViewModel() {
 
     private var drawingRequestDisposable: Disposable? = null
@@ -94,13 +95,13 @@ class GameViewModel(
             val elapsedTimeInSeconds =
                 (System.currentTimeMillis() - levelStartTimeInMillis).toInt() / 1000
 
+            // TODO: Log level_success event (101)
+
+
             gameEvents.onNext(
-                // TODO: Log level_success event (101)
-                
-                
                 LevelClearEvent(
                     numAttempts, elapsedTimeInSeconds,
-                    currentLevel == GameSettings.MAX_GAME_LEVEL, isHintUsed, drawing
+                    currentLevel == MAX_GAME_LEVEL, isHintUsed, drawing,
                 )
             )
         } else {
@@ -194,6 +195,8 @@ class GameViewModel(
 
     private fun finishGame() {
         // TODO: Log game_complete event (101)
+
+
         gameEvents.onNext(GameOverEvent(numCorrectAnswers))
     }
 

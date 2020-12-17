@@ -31,13 +31,14 @@ class AwesomeDrawingQuiz : Application() {
         }
     }
 
-  // TODO: Pass FirebaseAnalytics instance as a parameter (101)
+    // TODO: Pass FirebaseAnalytics instance as a parameter (101)
     fun provideViewModelFactory() = AwesomeDrawingQuizViewModelFactory(
-      this,
-      provideGameSettings(),
+        this,
+        provideGameSettings(),
     )
 
     // TODO: Provide FirebaseAnalytics instance (101)
+
 
     // TODO: Provide FirebaseRemoteConfig instance (102)
     private fun provideGameSettings() = GameSettings()

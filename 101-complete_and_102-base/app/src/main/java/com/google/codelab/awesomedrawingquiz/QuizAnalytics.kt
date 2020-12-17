@@ -1,23 +1,7 @@
-/*
- * Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.google.codelab.awesomedrawingquiz
 
-import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 
 private const val EVENT_AD_REWARD_PROMPT = "ad_reward_prompt"
 
@@ -46,27 +30,27 @@ private const val PARAM_NUMBER_OF_CORRECT_ANSWERS = "number_of_correct_answers"
 fun FirebaseAnalytics.logGameStart() = logEvent(EVENT_GAME_START, null)
 
 fun FirebaseAnalytics.logLevelStart(levelName: String) {
-  logEvent(FirebaseAnalytics.Event.LEVEL_START, Bundle().apply {
-    putString(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
-  })
+    logEvent(FirebaseAnalytics.Event.LEVEL_START) {
+        param(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
+    }
 }
 
 fun FirebaseAnalytics.logLevelWrongAnswer(levelName: String) {
-  logEvent(EVENT_LEVEL_WRONG_ANSWER, Bundle().apply {
-    putString(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
-  })
+    logEvent(EVENT_LEVEL_WRONG_ANSWER) {
+        param(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
+    }
 }
 
 fun FirebaseAnalytics.logAdRewardPrompt(adUnitId: String) {
-  logEvent(EVENT_AD_REWARD_PROMPT, Bundle().apply {
-    putString(PARAM_AD_UNIT_ID, adUnitId)
-  })
+    logEvent(EVENT_AD_REWARD_PROMPT) {
+        param(PARAM_AD_UNIT_ID, adUnitId)
+    }
 }
 
 fun FirebaseAnalytics.logAdRewardImpression(adUnitId: String) {
-  logEvent(EVENT_AD_REWARD_IMPRESSION, Bundle().apply {
-    putString(PARAM_AD_UNIT_ID, adUnitId)
-  })
+    logEvent(EVENT_AD_REWARD_IMPRESSION) {
+        param(PARAM_AD_UNIT_ID, adUnitId)
+    }
 }
 
 fun FirebaseAnalytics.logLevelSuccess(
@@ -75,12 +59,12 @@ fun FirebaseAnalytics.logLevelSuccess(
     elapsedTimeSec: Int,
     hintUsed: Boolean
 ) {
-  logEvent(EVENT_LEVEL_SUCCESS, Bundle().apply {
-    putString(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
-    putInt(PARAM_NUMBER_OF_ATTEMPTS, numberOfAttempts)
-    putInt(PARAM_ELAPSED_TIME_SEC, elapsedTimeSec)
-    putInt(PARAM_HINT_USED, if (hintUsed) 1 else 0)
-  })
+    logEvent(EVENT_LEVEL_SUCCESS) {
+        param(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
+        param(PARAM_NUMBER_OF_ATTEMPTS, numberOfAttempts.toLong())
+        param(PARAM_ELAPSED_TIME_SEC, elapsedTimeSec.toLong())
+        param(PARAM_HINT_USED, if (hintUsed) 1 else 0)
+    }
 }
 
 fun FirebaseAnalytics.logLevelFail(
@@ -89,18 +73,18 @@ fun FirebaseAnalytics.logLevelFail(
     elapsedTimeSec: Int,
     hintUsed: Boolean
 ) {
-  logEvent(EVENT_LEVEL_FAIL, Bundle().apply {
-    putString(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
-    putInt(PARAM_NUMBER_OF_ATTEMPTS, numberOfAttempts)
-    putInt(PARAM_ELAPSED_TIME_SEC, elapsedTimeSec)
-    putInt(PARAM_HINT_USED, if (hintUsed) 1 else 0)
-  })
+    logEvent(EVENT_LEVEL_FAIL) {
+        param(FirebaseAnalytics.Param.LEVEL_NAME, levelName)
+        param(PARAM_NUMBER_OF_ATTEMPTS, numberOfAttempts.toLong())
+        param(PARAM_ELAPSED_TIME_SEC, elapsedTimeSec.toLong())
+        param(PARAM_HINT_USED, if (hintUsed) 1 else 0)
+    }
 }
 
 fun FirebaseAnalytics.logGameComplete(
     numberOfCorrectAnswers: Int
 ) {
-  logEvent(EVENT_GAME_COMPLETE, Bundle().apply {
-    putInt(PARAM_NUMBER_OF_CORRECT_ANSWERS, numberOfCorrectAnswers)
-  })
+    logEvent(EVENT_GAME_COMPLETE) {
+        param(PARAM_NUMBER_OF_CORRECT_ANSWERS, numberOfCorrectAnswers.toLong())
+    }
 }

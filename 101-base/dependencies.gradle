@@ -11,11 +11,8 @@ ext {
 
     // Library
 
-    // TODO: Declare Firebase Analytics SDK version (101)
+    // TODO: Declare Firebase BOM version (101)
 
-    // TODO: Declare Firebase Remote Config SDK version (102)
-
-    // TODO: Declare Firebase Core SDK version (101)
 
     appCompatVersion = '1.2.0'
     coordinatorLayoutVersion = '1.1.0'
@@ -23,7 +20,7 @@ ext {
     gmaVersion = '19.6.0'
     gsonVersion = '2.8.6'
     junitVersion = '4.13.1'
-    kotlinVersion = '1.4.20'
+    kotlinVersion = '1.4.21'
     lifecycleVersion = '2.2.0'
     mdcVersion = '1.2.1'
     mockitoVersion = '2.23.0'

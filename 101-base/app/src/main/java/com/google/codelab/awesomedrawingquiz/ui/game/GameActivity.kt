@@ -57,7 +57,6 @@ class GameActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        loadRewardedVideoAd()
         setupActions()
         setupViewModel()
         showGameStartFullScreenDialog()
@@ -127,6 +126,7 @@ class GameActivity : AppCompatActivity() {
                 setOnClickListener {
                     removeDialogView()
                     viewModel.startGame()
+                    loadRewardedVideoAd()
                 }
             }
         }

@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/et_dialog_answer"
+        android:id="@+id/et_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textAutoComplete"

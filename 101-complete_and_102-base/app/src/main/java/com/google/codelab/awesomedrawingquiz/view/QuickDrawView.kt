@@ -69,8 +69,8 @@ class QuickDrawView @JvmOverloads constructor(
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     setMeasuredDimension(
-        View.resolveSize(200, widthMeasureSpec),
-        View.resolveSize(200, heightMeasureSpec)
+        resolveSize(200, widthMeasureSpec),
+        resolveSize(200, heightMeasureSpec)
     )
   }
 
