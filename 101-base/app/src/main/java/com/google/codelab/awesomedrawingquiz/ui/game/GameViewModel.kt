@@ -22,161 +22,189 @@ import com.google.codelab.awesomedrawingquiz.data.Drawing
 import com.google.codelab.awesomedrawingquiz.data.DrawingDao
 import com.google.codelab.awesomedrawingquiz.ui.game.GameSettings.Companion.MAX_GAME_LEVEL
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.util.ArrayList
+import java.util.*
 
 class GameViewModel(
     private val drawingDao: DrawingDao,
     private val settings: GameSettings
 ) : ViewModel() {
 
-  private var drawingRequestDisposable: Disposable? = null
+    private var drawingRequestDisposable: Disposable? = null
 
-  private var gameEventDisposable: Disposable? = null
+    private val gameEventDisposable = CompositeDisposable()
 
-  private val gameEvents = PublishSubject.create<GameEvent>()
+    private val gameEvents = PublishSubject.create<GameEvent>()
 
-  // Level-scoped information
+    // Level-scoped information
 
-  val isHintAvailable: Boolean
-    get() = !isHintUsed
+    val isHintAvailable: Boolean
+        get() = !isHintUsed
 
-  private var currentLevel = 1
+    private var currentLevel = 1
 
-  private var numAttempts = 0
+    private var numAttempts = 0
 
-  private var disclosedLettersByDefault = 1
+    private var disclosedLettersByDefault = 1
 
-  private var disclosedLetters: Int = 0
+    private var disclosedLetters: Int = 0
 
-  private var levelStartTimeInMillis: Long = 0
+    private var levelStartTimeInMillis: Long = 0
 
-  private var isHintUsed: Boolean = false
+    private var isHintUsed: Boolean = false
 
-  private lateinit var clue: String
+    private lateinit var clue: String
 
-  private lateinit var drawing: Drawing
+    private lateinit var drawing: Drawing
 
-  // Game-scoped information
+    // Game-scoped information
 
-  private var numCorrectAnswers = 0
+    private var numCorrectAnswers = 0
 
-  private val seenWords = ArrayList<String>()
+    private val seenWords = ArrayList<String>()
 
-  fun registerGameEventListener(listener: (GameEvent) -> Unit) {
-    disposeIfNeeded(gameEventDisposable)
-
-    gameEventDisposable = gameEvents
-        .subscribeOn(Schedulers.computation())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(listener)
-  }
-
-  fun startLevel() {
-    numCorrectAnswers = 0
-    seenWords.clear()
-
-    startLevel(1)
-  }
-
-  fun checkAnswer(userAnswer: String) {
-    numAttempts++
-
-    val correct = drawing.word.equals(userAnswer, true)
-    if (correct) {
-      numCorrectAnswers++
-      val elapsedTimeInSeconds =
-          (System.currentTimeMillis() - levelStartTimeInMillis).toInt() / 1000
-
-      gameEvents.onNext(
-          LevelClearEvent(
-              numAttempts, elapsedTimeInSeconds,
-              currentLevel == GameSettings.MAX_GAME_LEVEL, isHintUsed, drawing
-          )
-      )
-    } else {
-      gameEvents.onNext(WrongAnswerEvent(drawing))
-    }
-  }
-
-  fun skipLevel() {
-    val elapsedTimeInSeconds =
-        (System.currentTimeMillis() - levelStartTimeInMillis).toInt() / 1000
-    gameEvents.onNext(
-        LevelSkipEvent(numAttempts, elapsedTimeInSeconds, isHintUsed, drawing)
-    )
-    moveToNextLevel()
-  }
-
-  fun moveToNextLevel() {
-    if (currentLevel < MAX_GAME_LEVEL) {
-      startLevel(currentLevel + 1)
-    } else {
-      finishGame()
-    }
-  }
-
-  fun useHint() {
-    if (isHintUsed) {
-      Log.e("GameViewModel", "Hint already used")
-      return
+    fun registerGameEventListener(listener: (GameEvent) -> Unit) {
+        gameEventDisposable.add(
+            gameEvents
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(listener)
+        )
     }
 
-    isHintUsed = true
-    disclosedLetters += settings.rewardAmount
+    fun startGame() {
+        numCorrectAnswers = 0
+        seenWords.clear()
 
-    clue = generateClue(drawing.word, disclosedLetters)
-    gameEvents.onNext(ClueUpdateEvent(clue, drawing))
-  }
+        // TODO: Log game_start event (101)
 
-  private fun applyDifficulty() {
-    disclosedLettersByDefault = when (settings.difficulty) {
-      GameSettings.DIFFICULTY_EASY -> 2
-      GameSettings.DIFFICULTY_NORMAL -> 1
-      else -> 1
+
+        startLevel(1)
     }
-    disclosedLetters = disclosedLettersByDefault
-  }
 
-  private fun requestNewDrawing() {
-    disposeIfNeeded(drawingRequestDisposable)
+    fun checkAnswer(userAnswer: String) {
+        numAttempts++
 
-    drawingRequestDisposable = drawingDao.getRandomDrawings(seenWords)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe { d ->
-          clue = generateClue(d.word, disclosedLetters)
-          seenWords.add(d.word)
-          drawing = d
+        val correct = drawing.word.equals(userAnswer, true)
+        if (correct) {
+            numCorrectAnswers++
+            val elapsedTimeInSeconds =
+                (System.currentTimeMillis() - levelStartTimeInMillis).toInt() / 1000
 
-          gameEvents.onNext(NewLevelEvent(currentLevel, clue, d))
+            gameEvents.onNext(
+                // TODO: Log level_success event (101)
+                
+                
+                LevelClearEvent(
+                    numAttempts, elapsedTimeInSeconds,
+                    currentLevel == GameSettings.MAX_GAME_LEVEL, isHintUsed, drawing
+                )
+            )
+        } else {
+            // TODO: Log level_wrong_answer event (101)
+
+
+            gameEvents.onNext(WrongAnswerEvent(drawing))
         }
-  }
-
-  private fun startLevel(newLevel: Int) {
-    numAttempts = 0
-    isHintUsed = false
-    currentLevel = newLevel
-    levelStartTimeInMillis = System.currentTimeMillis()
-
-    applyDifficulty()
-    requestNewDrawing()
-  }
-
-  private fun finishGame() {
-    gameEvents.onNext(GameOverEvent(numCorrectAnswers))
-  }
-
-  private fun disposeIfNeeded(d: Disposable?) {
-    if (null != d && !d.isDisposed) {
-      d.dispose()
     }
-  }
 
-  override fun onCleared() {
-    disposeIfNeeded(drawingRequestDisposable)
-    disposeIfNeeded(gameEventDisposable)
-  }
+    fun skipLevel() {
+        val elapsedTimeInSeconds =
+            (System.currentTimeMillis() - levelStartTimeInMillis).toInt() / 1000
+        
+        // TODO: Log level_fail event (101)
+        
+        
+        gameEvents.onNext(
+            LevelSkipEvent(numAttempts, elapsedTimeInSeconds, isHintUsed, drawing)
+        )
+        moveToNextLevel()
+    }
+
+    fun moveToNextLevel() {
+        if (currentLevel < MAX_GAME_LEVEL) {
+            startLevel(currentLevel + 1)
+        } else {
+            finishGame()
+        }
+    }
+
+    fun useHint() {
+        if (isHintUsed) {
+            Log.e("GameViewModel", "Hint already used")
+            return
+        }
+
+        isHintUsed = true
+        disclosedLetters += settings.rewardAmount
+
+        clue = generateClue(drawing.word, disclosedLetters)
+        gameEvents.onNext(ClueUpdateEvent(clue, drawing))
+    }
+
+    fun logAdRewardPrompt(adUnitId: String) {
+        // TODO: Log ad_reward_prompt event (101)
+
+    }
+
+    fun logAdRewardImpression(adUnitId: String) {
+        // TODO: Log ad_reward_impression event (101)
+
+    }
+
+    private fun applyDifficulty() {
+        disclosedLettersByDefault = when (settings.difficulty) {
+            GameSettings.DIFFICULTY_EASY -> 2
+            GameSettings.DIFFICULTY_NORMAL -> 1
+            else -> 1
+        }
+        disclosedLetters = disclosedLettersByDefault
+    }
+
+    private fun requestNewDrawing() {
+        disposeIfNeeded(drawingRequestDisposable)
+
+        drawingRequestDisposable = drawingDao.getRandomDrawings(seenWords)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { d ->
+                clue = generateClue(d.word, disclosedLetters)
+                seenWords.add(d.word)
+                drawing = d
+
+                // TODO: Log level_start event (101)
+
+
+                gameEvents.onNext(NewLevelEvent(currentLevel, clue, d))
+            }
+    }
+
+    private fun startLevel(newLevel: Int) {
+        numAttempts = 0
+        isHintUsed = false
+        currentLevel = newLevel
+        levelStartTimeInMillis = System.currentTimeMillis()
+
+        applyDifficulty()
+        requestNewDrawing()
+    }
+
+    private fun finishGame() {
+        // TODO: Log game_complete event (101)
+        gameEvents.onNext(GameOverEvent(numCorrectAnswers))
+    }
+
+    private fun disposeIfNeeded(d: Disposable?) {
+        if (null != d && !d.isDisposed) {
+            d.dispose()
+        }
+    }
+
+    override fun onCleared() {
+        disposeIfNeeded(drawingRequestDisposable)
+        disposeIfNeeded(gameEventDisposable)
+    }
 }

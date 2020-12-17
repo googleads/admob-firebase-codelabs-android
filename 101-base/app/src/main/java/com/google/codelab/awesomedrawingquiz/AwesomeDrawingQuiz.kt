@@ -17,22 +17,31 @@
 package com.google.codelab.awesomedrawingquiz
 
 import android.app.Application
+import android.util.Log
 import com.google.android.gms.ads.MobileAds
 import com.google.codelab.awesomedrawingquiz.ui.game.GameSettings
 import com.google.codelab.awesomedrawingquiz.viewmodel.AwesomeDrawingQuizViewModelFactory
 
 class AwesomeDrawingQuiz : Application() {
 
-  override fun onCreate() {
-    super.onCreate()
-    MobileAds.initialize(this, getString(R.string.admob_app_id))
-  }
+    override fun onCreate() {
+        super.onCreate()
+        MobileAds.initialize(this) {
+            Log.d("AwesomeDrawingQuiz", "Mobile Ads SDK initialized")
+        }
+    }
 
-  fun provideViewModelFactory() = AwesomeDrawingQuizViewModelFactory(this, provideGameSettings())
+  // TODO: Pass FirebaseAnalytics instance as a parameter (101)
+    fun provideViewModelFactory() = AwesomeDrawingQuizViewModelFactory(
+      this,
+      provideGameSettings(),
+    )
 
-  // TODO: Provide FirebaseRemoteConfig instance (102)
-  private fun provideGameSettings() = GameSettings()
+    // TODO: Provide FirebaseAnalytics instance (101)
 
-  // TODO: Add a function that provides a FirebaseRemoteConfig instance (102)
+    // TODO: Provide FirebaseRemoteConfig instance (102)
+    private fun provideGameSettings() = GameSettings()
+
+    // TODO: Add a function that provides a FirebaseRemoteConfig instance (102)
 
 }
