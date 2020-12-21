@@ -16,7 +16,7 @@
 
 package com.google.codelab.awesomedrawingquiz.ui.game
 
-// TODO: Add FirebaseRemoteConfig as a class member
+// TODO: Add FirebaseRemoteConfig as a class member (102)
 class GameSettings {
 
   // TODO: Apply difficulty from the Remote Config (103)

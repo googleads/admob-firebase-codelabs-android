@@ -28,10 +28,10 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
-// COMPLETE: Accept FirebaseAnalytics instance as a parameter (101)
 class GameViewModel(
     private val drawingDao: DrawingDao,
     private val settings: GameSettings,
+    // TODO: Accept FirebaseAnalytics instance as a parameter (101)
 ) : ViewModel() {
 
     private var drawingRequestDisposable: Disposable? = null

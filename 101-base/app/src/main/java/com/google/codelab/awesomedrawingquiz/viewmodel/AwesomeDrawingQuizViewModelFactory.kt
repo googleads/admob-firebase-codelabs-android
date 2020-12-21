@@ -25,10 +25,10 @@ import com.google.codelab.awesomedrawingquiz.ui.game.GameSettings
 import com.google.codelab.awesomedrawingquiz.ui.game.GameViewModel
 import com.google.codelab.awesomedrawingquiz.ui.splash.SplashViewModel
 
-// TODO: Accept FirebaseAnalytics instance as a parameter (101)
 class AwesomeDrawingQuizViewModelFactory(
-  context: Context,
-  private val gameSettings: GameSettings,
+    context: Context,
+    private val gameSettings: GameSettings,
+    // TODO: Accept FirebaseAnalytics instance as a parameter (101)
 ) : ViewModelProvider.Factory {
 
     private val assetManager = context.assets
