@@ -1,96 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <fragment
+        class="com.google.codelab.awesomedrawingquiz.ui.game.LevelFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="8dp"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent"
+        android:tag="level" />
 
-        <TextView
-            android:id="@+id/tvActivityGameRound"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="#222222"
-            tools:text="Round 1/6" />
-
-        <TextView
-            android:id="@+id/tvActivityGameHint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:minHeight="?attr/actionBarSize"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="#222222"
-            android:typeface="monospace"
-            tools:text="A_____ M________" />
-
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:layout_margin="12dp"
-        app:cardCornerRadius="4dp">
-
-        <com.google.codelab.awesomedrawingquiz.view.QuickDrawView
-            android:id="@+id/qvActivityGame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.cardview.widget.CardView>
-
-    <LinearLayout
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar"
+        style="@style/Widget.MaterialComponents.BottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        android:elevation="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        app:menu="@menu/game" />
 
-        <Button
-            android:id="@+id/btnActivityGameHint"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="@string/hint" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Hint"
+        android:textColor="#EDEDED"
+        android:visibility="invisible"
+        app:backgroundTint="?attr/colorAccent"
+        app:icon="@drawable/ic_giftcard"
+        app:iconTint="#EDEDED"
 
-        <Button
-            android:id="@+id/btnActivityGameAnswer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="@string/answer" />
-
-        <Button
-            android:id="@+id/btnActivityGameSkip"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/skip" />
-
-    </LinearLayout>
-
-    <include layout="@layout/content_full_screen_dialog" />
+        app:layout_anchor="@id/bottom_app_bar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,7 +10,7 @@
     <string name="good_job">Good Job!</string>
     <string name="guess_the_name">Guess the name!</string>
     <string name="hint">Hint</string>
-    <string name="level_indicator">Level %d/%d</string>
+    <string name="level_indicator">Level %1$d/%2$d</string>
     <string name="need_a_hint">Need a hint?</string>
     <string name="need_a_hint_description">Watch an ad to get a hint!</string>
     <string name="next_level">Next level</string>

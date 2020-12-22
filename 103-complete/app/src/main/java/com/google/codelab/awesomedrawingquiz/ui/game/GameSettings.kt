@@ -18,26 +18,32 @@ package com.google.codelab.awesomedrawingquiz.ui.game
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
+// COMPLETE: Add FirebaseRemoteConfig as a class member (102)
 class GameSettings(private val rc: FirebaseRemoteConfig) {
 
-  val difficulty: String
-    get() = rc.getString(KEY_DIFFICULTY)
+    // COMPLETE: Apply difficulty from the Remote Config (103)
+    val difficulty: String
+        get() = rc.getString(KEY_DIFFICULTY)
 
-  val rewardAmount: Int
-    get() = rc.getLong(KEY_REWARD_AMOUNT).toInt()
+    // COMPLETE: Apply reward amount from the Remote Config (102)
+    val rewardAmount: Int
+        get() = rc.getLong(KEY_REWARD_AMOUNT).toInt()
 
-  companion object {
+    companion object {
 
-    const val MAX_GAME_LEVEL = 6
+        const val MAX_GAME_LEVEL = 6
 
-    const val DIFFICULTY_EASY = "easy"
+        const val DIFFICULTY_EASY = "easy"
 
-    const val DIFFICULTY_NORMAL = "normal"
+        const val DIFFICULTY_NORMAL = "normal"
 
-    private const val KEY_DIFFICULTY = "difficulty"
+        // COMPLETE: Add a key for 'difficulty' Remote Config parameter (103)
+        private const val KEY_DIFFICULTY = "difficulty"
 
-    private const val KEY_REWARD_AMOUNT = "reward_amount"
-  }
+        // COMPLETE: Add a key for 'reward_amount' Remote Config parameter (102)
+        private const val KEY_REWARD_AMOUNT = "reward_amount"
+
+    }
 }
 
 

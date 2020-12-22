@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
+// COMPLETE: Apply google-services plugin (101)
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -19,6 +21,19 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,27 +43,33 @@ android {
 }
 
 dependencies {
+    // COMPLETE: Import the Firebase BoM (101)
+    implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
+
+    // COMPLETE: Add Firebase Analytics dependency (101)
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // COMPLETE: Add Firebase Remote Config dependency (102)
+    implementation 'com.google.firebase:firebase-config-ktx'
+
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.cardview:cardview:$cardViewVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
     implementation "com.google.android.gms:play-services-ads:$gmaVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
-    implementation "com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion"
-    implementation "com.google.firebase:firebase-config:$firebaseConfigVersion"
-    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
     implementation "com.google.android.material:material:$mdcVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
 }
 
-apply plugin: 'com.google.gms.google-services'
+

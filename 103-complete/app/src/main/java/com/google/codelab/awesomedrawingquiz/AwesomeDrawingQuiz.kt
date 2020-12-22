@@ -21,42 +21,45 @@ import android.util.Log
 import com.google.android.gms.ads.MobileAds
 import com.google.codelab.awesomedrawingquiz.ui.game.GameSettings
 import com.google.codelab.awesomedrawingquiz.viewmodel.AwesomeDrawingQuizViewModelFactory
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 
 class AwesomeDrawingQuiz : Application() {
 
-  override fun onCreate() {
-    super.onCreate()
-    MobileAds.initialize(this, getString(R.string.admob_app_id))
-  }
-
-  fun provideViewModelFactory() = AwesomeDrawingQuizViewModelFactory(this, provideGameSettings())
-
-  private fun provideGameSettings() = GameSettings(provideRemoteConfig())
-
-  private fun provideRemoteConfig(): FirebaseRemoteConfig {
-    val remoteConfig = FirebaseRemoteConfig.getInstance().apply {
-      setConfigSettings(
-          FirebaseRemoteConfigSettings.Builder()
-              .setDeveloperModeEnabled(BuildConfig.DEBUG)
-              .build()
-      )
-      setDefaults(R.xml.remote_config_defaults)
+    override fun onCreate() {
+        super.onCreate()
+        MobileAds.initialize(this) {
+            Log.d("AwesomeDrawingQuiz", "Mobile Ads SDK initialized")
+        }
     }
 
-    val fetchTask = if (BuildConfig.DEBUG) {
-      remoteConfig.fetch(0L)
-    } else {
-      remoteConfig.fetch()
-    }
+    fun provideViewModelFactory() = AwesomeDrawingQuizViewModelFactory(
+        this,
+        provideGameSettings(),
+        // COMPLETE: Pass FirebaseAnalytics instance as a parameter (101)
+        provideFirebaseAnalytics(),
+    )
 
-    fetchTask.addOnCompleteListener {
-      if (it.isSuccessful) {
-        Log.d("AwesomeDrawingQuiz", "Remote config value fetched")
-        remoteConfig.activateFetched()
-      }
+    // COMPLETE: Provide FirebaseAnalytics instance (101)
+    private fun provideFirebaseAnalytics() = Firebase.analytics
+
+    // COMPLETE: Provide FirebaseRemoteConfig instance (102)
+    private fun provideGameSettings() = GameSettings(provideRemoteConfig())
+
+    // COMPLETE: Add a function that provides a FirebaseRemoteConfig instance (102)
+    private fun provideRemoteConfig(): FirebaseRemoteConfig {
+        val rc = Firebase.remoteConfig.apply {
+            setDefaultsAsync(R.xml.remote_config_defaults)
+        }
+        val fetchTask = if (BuildConfig.DEBUG) rc.fetch(0L) else rc.fetch()
+        fetchTask.addOnCompleteListener {
+            if (it.isSuccessful) {
+                Log.d("AwesomeDrawingQuiz", "Remote config value fetched")
+                rc.activate()
+            }
+        }
+        return rc
     }
-    return remoteConfig
-  }
 }

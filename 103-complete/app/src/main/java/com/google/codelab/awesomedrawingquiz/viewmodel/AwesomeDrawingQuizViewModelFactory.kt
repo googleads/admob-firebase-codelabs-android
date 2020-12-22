@@ -24,24 +24,29 @@ import com.google.codelab.awesomedrawingquiz.data.DatabaseProvider
 import com.google.codelab.awesomedrawingquiz.ui.game.GameSettings
 import com.google.codelab.awesomedrawingquiz.ui.game.GameViewModel
 import com.google.codelab.awesomedrawingquiz.ui.splash.SplashViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class AwesomeDrawingQuizViewModelFactory(
-    context: Context, private val gameSettings: GameSettings
+    context: Context,
+    private val gameSettings: GameSettings,
+    // COMPLETE: Accept FirebaseAnalytics instance as a parameter (101)
+    private val analytics: FirebaseAnalytics,
 ) : ViewModelProvider.Factory {
 
-  private val assetManager = context.assets
+    private val assetManager = context.assets
 
-  private val drawingDao = DatabaseProvider.provideDrawingDao(context)
+    private val drawingDao = DatabaseProvider.provideDrawingDao(context)
 
-  private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-  @Suppress("UNCHECKED_CAST")
-  override fun <T : ViewModel> create(modelClass: Class<T>): T {
-    if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
-      return GameViewModel(drawingDao, gameSettings) as T
-    } else if (modelClass.isAssignableFrom(SplashViewModel::class.java)) {
-      return SplashViewModel(assetManager, preferences, drawingDao) as T
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
+            // COMPLETE: Pass FirebaseAnalytics instance as a parameter (101)
+            return GameViewModel(drawingDao, gameSettings, analytics) as T
+        } else if (modelClass.isAssignableFrom(SplashViewModel::class.java)) {
+            return SplashViewModel(assetManager, preferences, drawingDao) as T
+        }
+        throw IllegalArgumentException("unknown model class $modelClass")
     }
-    throw IllegalArgumentException("unknown model class $modelClass")
-  }
 }

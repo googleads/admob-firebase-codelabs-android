@@ -18,28 +18,29 @@ package com.google.codelab.awesomedrawingquiz.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModelProviders
 import com.google.codelab.awesomedrawingquiz.AwesomeDrawingQuiz
-import com.google.codelab.awesomedrawingquiz.R
+import com.google.codelab.awesomedrawingquiz.databinding.ActivitySplashBinding
 import com.google.codelab.awesomedrawingquiz.ui.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
-  private val viewModel by lazy {
-    ViewModelProviders.of(
-        this, (application as AwesomeDrawingQuiz).provideViewModelFactory()
-    )[SplashViewModel::class.java]
-  }
+    private lateinit var binding: ActivitySplashBinding
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_splash)
-
-    viewModel.importDrawingsIfRequired {
-      ActivityCompat.finishAffinity(this)
-      startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+    private val viewModel by viewModels<SplashViewModel> {
+      (application as AwesomeDrawingQuiz).provideViewModelFactory()
     }
-  }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel.importDrawingsIfRequired {
+            ActivityCompat.finishAffinity(this)
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        }
+    }
 }

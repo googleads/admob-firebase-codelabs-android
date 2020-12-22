@@ -11,7 +11,9 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidPluginVersion"
-        classpath "com.google.gms:google-services:$googleServicesPluginVersion"
+        // COMPLETE: Add google-services plugin (101)
+        classpath "com.google.gms:google-services:$googleServicesVersion"
+
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
