@@ -4,7 +4,7 @@ This codelab shows you how to use the AdMob Rewarded Ads and Firebase together t
 
 ## What you'll need
 
-* Android Studio version 3.4+
+* Android Studio version 4.1+
 * A Google account
 * A test device with Android 5.0+ with a USB cable to connect your device, or an Android Emulator running AVD(Android Virtual Device) with a system image that supports Play Store/Google APIs
 
