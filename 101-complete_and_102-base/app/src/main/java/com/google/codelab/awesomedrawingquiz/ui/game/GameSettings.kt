@@ -19,7 +19,6 @@ package com.google.codelab.awesomedrawingquiz.ui.game
 // TODO: Add FirebaseRemoteConfig as a class member (102)
 class GameSettings {
 
-    // TODO: Apply difficulty from the Remote Config (103)
     val difficulty: String
         get() = DIFFICULTY_NORMAL
 
@@ -34,8 +33,6 @@ class GameSettings {
         const val DIFFICULTY_EASY = "easy"
 
         const val DIFFICULTY_NORMAL = "normal"
-
-        // TODO: Add a key for 'difficulty' Remote Config parameter (103)
 
         // TODO: Add a key for 'reward_amount' Remote Config parameter (102)
 

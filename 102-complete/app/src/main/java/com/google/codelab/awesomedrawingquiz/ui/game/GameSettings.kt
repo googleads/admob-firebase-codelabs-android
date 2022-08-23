@@ -16,15 +16,17 @@
 
 package com.google.codelab.awesomedrawingquiz.ui.game
 
-// TODO: Add FirebaseRemoteConfig as a class member (102)
-class GameSettings {
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+
+// COMPLETE: Add FirebaseRemoteConfig as a class member (102)
+class GameSettings(private val rc: FirebaseRemoteConfig) {
 
     val difficulty: String
         get() = DIFFICULTY_NORMAL
 
-    // TODO: Apply reward amount from the Remote Config (102)
+    // COMPLETE: Apply reward amount from the Remote Config (102)
     val rewardAmount: Int
-        get() = 1
+        get() = rc.getLong(KEY_REWARD_AMOUNT).toInt()
 
     companion object {
 
@@ -34,7 +36,8 @@ class GameSettings {
 
         const val DIFFICULTY_NORMAL = "normal"
 
-        // TODO: Add a key for 'reward_amount' Remote Config parameter (102)
+        // COMPLETE: Add a key for 'reward_amount' Remote Config parameter (102)
+        private const val KEY_REWARD_AMOUNT = "reward_amount"
 
     }
 }
